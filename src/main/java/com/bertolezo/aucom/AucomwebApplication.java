@@ -1,19 +1,25 @@
 package com.bertolezo.aucom;
 
-import org.assertj.core.util.Arrays;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bertolezo.aucom.domain.Categoria;
+import com.bertolezo.aucom.domain.Produto;
 import com.bertolezo.aucom.repositories.CategoriaRepository;
+import com.bertolezo.aucom.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class AucomwebApplication implements CommandLineRunner{
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository; 
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AucomwebApplication.class, args);
@@ -25,8 +31,22 @@ public class AucomwebApplication implements CommandLineRunner{
 		Categoria cat1 = new Categoria(null,"Informática");
 		Categoria cat2 = new Categoria(null,"Escritório");
 		
+		Produto p1 = new Produto(null,"Computador",2000.00);
+		Produto p2 = new Produto(null,"Impressora",800.00);
+		Produto p3 = new Produto(null,"Mouse",80.00);
+		
+		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
+		cat2.getProdutos().addAll(Arrays.asList(p2));
+		
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat1));
+		
 		categoriaRepository.save(cat1);
 		categoriaRepository.save(cat2);
+		produtoRepository.save(p1);
+		produtoRepository.save(p2);
+		produtoRepository.save(p3);
 		
 	}
 }
