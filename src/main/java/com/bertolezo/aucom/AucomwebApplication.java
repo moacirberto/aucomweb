@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bertolezo.aucom.domain.Categoria;
+import com.bertolezo.aucom.domain.Cidade;
+import com.bertolezo.aucom.domain.Estado;
 import com.bertolezo.aucom.domain.Produto;
 import com.bertolezo.aucom.repositories.CategoriaRepository;
+import com.bertolezo.aucom.repositories.CidadeRepository;
+import com.bertolezo.aucom.repositories.EstadoRepository;
 import com.bertolezo.aucom.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class AucomwebApplication implements CommandLineRunner{
 	
 	@Autowired
 	private ProdutoRepository produtoRepository; 
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AucomwebApplication.class, args);
@@ -47,6 +57,23 @@ public class AucomwebApplication implements CommandLineRunner{
 		produtoRepository.save(p1);
 		produtoRepository.save(p2);
 		produtoRepository.save(p3);
+
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+
+		Cidade c1 = new Cidade(null,"Uberlândia",est1);
+		Cidade c2 = new Cidade(null,"São Paulo",est2);
+		Cidade c3 = new Cidade(null,"Campinas",est2);
 		
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		
+		estadoRepository.save(est1);
+		estadoRepository.save(est2);
+		
+		cidadeRepository.save(c1);
+		cidadeRepository.save(c2);
+		cidadeRepository.save(c3);
+
 	}
 }
