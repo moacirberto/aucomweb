@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bertolezo.aucom.domain.Categoria;
 import com.bertolezo.aucom.domain.Cidade;
+import com.bertolezo.aucom.domain.Cliente;
+import com.bertolezo.aucom.domain.Endereco;
 import com.bertolezo.aucom.domain.Estado;
 import com.bertolezo.aucom.domain.Produto;
+import com.bertolezo.aucom.domain.enums.TipoCliente;
 import com.bertolezo.aucom.repositories.CategoriaRepository;
 import com.bertolezo.aucom.repositories.CidadeRepository;
+import com.bertolezo.aucom.repositories.ClienteRepository;
+import com.bertolezo.aucom.repositories.EnderecoRepository;
 import com.bertolezo.aucom.repositories.EstadoRepository;
 import com.bertolezo.aucom.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class AucomwebApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AucomwebApplication.class, args);
@@ -74,6 +85,16 @@ public class AucomwebApplication implements CommandLineRunner{
 		cidadeRepository.save(c1);
 		cidadeRepository.save(c2);
 		cidadeRepository.save(c3);
-
+		
+		Cliente cli1 = new Cliente(null,"Maria Silva","maria@gmail.com","36378912377",TipoCliente.PESSOAFISICA);
+        cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+        Endereco e1 = new Endereco(null,"Rua Flores","300","Apto 303","Jardim","38220834",cli1,c1);
+        Endereco e2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cli1,c2);
+        cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+        
+        clienteRepository.save(cli1);
+        enderecoRepository.save(e1);
+        enderecoRepository.save(e2);
+        
 	}
 }
