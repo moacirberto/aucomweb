@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.bertolezo.aucom.domain.Categoria;
+import com.bertolezo.aucom.domain.Cliente;
+import com.bertolezo.aucom.dto.CategoriaDTO;
 import com.bertolezo.aucom.repositories.CategoriaRepository;
 import com.bertolezo.aucom.services.exceptions.DateIntegrityException;
 import com.bertolezo.aucom.services.exceptions.ObjectNotFoundException;
@@ -33,8 +35,9 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateData(newObj,obj);
+		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) {
@@ -55,4 +58,13 @@ public class CategoriaService {
 				orderby);
 		return repo.findAll(pageRequest);
 	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(),objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	}
+
 }
